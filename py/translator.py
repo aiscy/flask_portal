@@ -76,7 +76,7 @@ def yandex_translate(key, text, dest_lang, source_lang, auto_lang=0):
         lang = '{src}-{dst}'.format(src=source_lang, dst=dest_lang)
     data = {
         'key': key,
-        'text': text,  # Для POST-запросов максимальный размер передаваемого текста составляет 10000 символов.
+        'text': text,  # TODO Для POST-запросов максимальный размер передаваемого текста составляет 10000 символов.
         'lang': lang,
         'format': 'plain',
         'options': auto_lang

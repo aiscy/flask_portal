@@ -3,16 +3,11 @@ import sqlite3
 import os
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, jsonify
+import logging
 from py.translator import yandex_translate, lang_support
 
 app = Flask(__name__)
 app.config.from_pyfile('configuration.py')
-
-
-def connect_db():
-    rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.Row
-    return rv
 
 
 def init_db():
@@ -21,6 +16,13 @@ def init_db():
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
+
+
+def connect_db():
+    rv = sqlite3.connect(app.config['DATABASE'])
+    rv.row_factory = sqlite3.Row
+    app.logger.debug('Connected to db.')
+    return rv
 
 
 def get_db():
@@ -88,12 +90,12 @@ def logout():
 
 @app.route('/_translate', methods=['POST'])
 def process_translate():
-    print(request.form)
+    # app.debug(request.form)
     translated = yandex_translate(key=app.config['TRANSLATE_YANDEX'],
                                             text=request.form['text'],
                                             dest_lang=request.form['destLang'],
                                             source_lang=request.form['sourceLang'])
-    try:
+    try:  # TODO временное решение :)
         return jsonify({'text': translated['text'],
                         'auto_lang': lang_support(translated.get('detected')['lang'])
                         })
