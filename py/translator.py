@@ -7,7 +7,7 @@ import requests.exceptions
 def lang_support(lang):
     return {
         'sq': 'албанский',
-        'en':'английский',
+        'en': 'английский',
         'ar': 'арабский',
         'hy': 'армянский',
         'az': 'азербайджанский',

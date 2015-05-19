@@ -3,11 +3,26 @@ import sqlite3
 import os
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, jsonify
-import logging
 from py.translator import yandex_translate, lang_support
 
 app = Flask(__name__)
 app.config.from_pyfile('configuration.py')
+
+
+# class login_required(object):
+#     def __init__(self, view):
+#         self.view = view
+#         self.__name__ = view.__name__
+#
+#     def __call__(self, *args, **kwargs):
+#         if not self.is_authenticated():
+#             return redirect(url_for('login') + '?next=' + request.path)
+#         return self.view(*args, **kwargs)
+#
+#     def is_authenticated(self):
+#         if request.environ.get('REMOTE_USER', None):
+#             return True
+#         return False
 
 
 def init_db():
@@ -37,6 +52,15 @@ def close_db(error):
         g.sqlite_db.close()
 
 
+@app.before_request
+def auth():
+    if not session.get('logged_in'):
+        if request.environ.get('REMOTE_USER'):
+            session['logged_in'] = True
+        else:
+            abort(401)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -53,8 +77,8 @@ def servicedesk():
 
 @app.route('/add', methods=['POST'])
 def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
+    # if not session.get('logged_in'):
+    #     abort(401)
     if request.form['title'] == '' or request.form['text'] == '':
         flash('Введите заголовок и текст заявки')
     else:
@@ -63,38 +87,40 @@ def add_entry():
                     [request.form['title'], request.form['text']])
         db.commit()
         flash('Добавлена новая заявка')
+
     return redirect(url_for('servicedesk'))
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            flash('Вы успешно авторизировались')
-            return redirect(url_for('servicedesk'))
-    return render_template('login.html', error=error)
-
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('servicedesk'))
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     error = None
+#     print(request.environ.items())
+#     if request.method == 'POST':
+#         if request.form['username'] != app.config['USERNAME']:
+#             error = 'Invalid username'
+#         elif request.form['password'] != app.config['PASSWORD']:
+#             error = 'Invalid password'
+#         else:
+#             session['logged_in'] = True
+#             flash('Вы успешно авторизировались')
+#             return redirect(url_for('servicedesk'))
+#     return render_template('login.html', error=error)
+#
+#
+# @app.route('/logout')
+# def logout():
+#     session.pop('logged_in', None)
+#     flash('You were logged out')
+#     return redirect(url_for('servicedesk'))
 
 
 @app.route('/_translate', methods=['POST'])
 def process_translate():
     # app.debug(request.form)
     translated = yandex_translate(key=app.config['TRANSLATE_YANDEX'],
-                                            text=request.form['text'],
-                                            dest_lang=request.form['destLang'],
-                                            source_lang=request.form['sourceLang'])
+                                  text=request.form['text'],
+                                  dest_lang=request.form['destLang'],
+                                  source_lang=request.form['sourceLang'])
     try:  # TODO временное решение :)
         return jsonify({'text': translated['text'],
                         'auto_lang': lang_support(translated.get('detected')['lang'])
@@ -107,6 +133,10 @@ def process_translate():
 def translate():
     return render_template('translate.html')
 
+app.route('/service_visio')
+def service_visio():
+
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=81)
