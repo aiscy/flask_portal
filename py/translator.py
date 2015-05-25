@@ -55,6 +55,21 @@ def lang_support(lang):
     }.get(lang)
 
 
+def get_lang_yandex():
+    import sqlite3
+    db = None
+    try:
+        request = requests.get('https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=trnsl.1.1.20150428T093017Z.bad19a8dcde607d3.fe0f694c1c97ae0591b88a9d4fca8c07b93b8b8d&ui=ru').json().get('langs')
+        db = sqlite3.connect('C:/Users/pavlomv/PycharmProjects/flask_miniportal/flask_miniportal.db')
+        cursor = db.cursor()
+        # cursor.executemany('INSERT INTO yandex_lang VALUES (?,?)', request.items())
+        # db.commit()
+        cursor.execute('SELECT quote_text, quote_author FROM quote_of_day ORDER BY quote_text')
+        # cursor.execute('SELECT * FROM yandex_lang ORDER BY language_full')
+        print(cursor.fetchone())
+    finally:
+        db.close()
+
 def yandex_except():
     error_codes = {
         401: 'Неправильный ключ API',
@@ -94,4 +109,4 @@ def yandex_translate(key, text, dest_lang, source_lang, auto_lang=0):
 
 
 if __name__ == '__main__':
-    pass
+    get_lang_yandex()

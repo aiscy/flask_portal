@@ -1,12 +1,15 @@
 # все импорты
 import sqlite3
 import os
+import flask_sijax
 from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash, jsonify
+                  abort, render_template, flash, jsonify
 from py.translator import yandex_translate, lang_support
 
 app = Flask(__name__)
 app.config.from_pyfile('configuration.py')
+app.config['SIJAX_STATIC_PATH'] = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
+# app.config['SIJAX_JSON_URI'] = '/static/js/sijax/json2.js'
 
 
 # class login_required(object):
@@ -57,13 +60,17 @@ def auth():
     if not session.get('logged_in'):
         if request.environ.get('REMOTE_USER'):
             session['logged_in'] = True
+            flash('Вы успешно авторизировались')
         else:
             abort(401)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    db = get_db()
+    cur = list(db.execute('SELECT quote_text, quote_author FROM quote_of_day').fetchone())
+    # app.logger.debug(cur[0], cur[1])
+    return render_template('index.html', quote_text=cur[0], quote_author=cur[1])
 
 
 @app.route('/servicedesk')
@@ -131,11 +138,14 @@ def process_translate():
 
 @app.route('/translate', methods=['GET'])
 def translate():
-    return render_template('translate.html')
+    db = get_db()
+    yandex_lang_list = list(db.execute('SELECT * FROM yandex_lang ORDER BY language_full'))
+    return render_template('translate.html', yandex_lang_list=yandex_lang_list)
+
 
 app.route('/service_visio')
 def service_visio():
-
+    return 1
 
 
 if __name__ == '__main__':
