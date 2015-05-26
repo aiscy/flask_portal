@@ -117,7 +117,6 @@ section
 .jumbotron 
 	position: relative
 	height: 400px
-	background-image: $url_1
 	background-position: 20% 42%
 	overflow: hidden
 	blockquote
@@ -130,16 +129,17 @@ section
 		opacity: 0.6
 	img.leftUp
 		position: absolute
-		top: 0
+		top: -50%
 		left: 0
 		width: 100%
-		animation:  kenburnsLeftUp
+		animation:  kenburnsLeftUp 40s
+		animation-fill-mode: forwards
 
 @keyframes kenburnsLeftUp
 	from
-		transform: scale(0.77) translate(-50px,-40px)
+		transform: scale(1) translate(0px, 0px)
 	to
-		transform: scale(1) translate(0px,0px)
+		transform: scale(1.2) translate(100px, 40px)
 
 
 .img-preload
