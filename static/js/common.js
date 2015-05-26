@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	$('.content').animated('fadeIn','fadeOut');
+	//$('.content').animated('fadeIn','fadeOut');
 		// Переключение языков
 	var sourceLang = '';
 	var destLang = 'ru';
