@@ -73,29 +73,28 @@ def index():
     return render_template('index.html', quote_text=cur[0], quote_author=cur[1])
 
 
-@app.route('/servicedesk')
-def servicedesk():
+@app.route('/food_menu')
+def food_menu():
     db = get_db()
-    cur = db.execute('select id, title, text from entries order by id desc')
-    entries = cur.fetchall()
-    return render_template('show_entries.html', entries=entries)
+    html = list(db.execute('SELECT html FROM food_menu').fetchone())
+    app.logger.debug(html)
+    return render_template('food_menu.html', menu=html[0])
 
 
-
-@app.route('/add', methods=['POST'])
-def add_entry():
-    # if not session.get('logged_in'):
-    #     abort(401)
-    if request.form['title'] == '' or request.form['text'] == '':
-        flash('Введите заголовок и текст заявки')
-    else:
-        db = get_db()
-        db.execute('insert into entries (title, text) values (?, ?)',
-                    [request.form['title'], request.form['text']])
-        db.commit()
-        flash('Добавлена новая заявка')
-
-    return redirect(url_for('servicedesk'))
+# @app.route('/add', methods=['POST'])
+# def add_entry():
+#     # if not session.get('logged_in'):
+#     #     abort(401)
+#     if request.form['title'] == '' or request.form['text'] == '':
+#         flash('Введите заголовок и текст заявки')
+#     else:
+#         db = get_db()
+#         db.execute('insert into entries (title, text) values (?, ?)',
+#                     [request.form['title'], request.form['text']])
+#         db.commit()
+#         flash('Добавлена новая заявка')
+#
+#     return redirect(url_for('servicedesk'))
 
 
 # @app.route('/login', methods=['GET', 'POST'])

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+	<div class="row">
+	{% autoescape false %}
+		{{menu}}
+	{% endautoescape %}
+	</div>
+</div>
+{% endblock %}

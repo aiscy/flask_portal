@@ -53,7 +53,7 @@ def get_food_menu():
         db = sqlite3.connect(app.config['DATABASE'])
         cursor = db.cursor()
         cursor.executemany('INSERT OR REPLACE INTO food_menu (id, html) VALUES (?, ?)',
-                           [(1, html_new.decode('utf-8'))])
+                           [(1, html_new.decode(encoding="utf-8"))])
         db.commit()
     finally:
         db.close()
