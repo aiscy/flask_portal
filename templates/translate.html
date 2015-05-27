@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block body %}
+	<section class="translator">
+		<div class="container">
+			<div class="row">
+				
+				<h2>Переводчик</h2>
+				<!-- <form id="translate_form" method=post action="{{ url_for('translate') }}"> -->
+				<form id="translate_form" method="POST" action="non-Ajax form handler" onsubmit="return checkForm(this;">
+					<div class="row">
+						<div class="col-md-12">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="btn_lang btn-group" role="group">
+								<button id="language" type="button" class="language btn btn-info active" value="">Автоопределение</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								Другой
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu lang_menu" role="menu">
+									<li><a class="language" href="#" value="">Автоопределение</a></li>
+									
+									{% for lang in yandex_lang_list %}
+										<li><a class="language" href="#" value="{{lang[0]}}">{{lang[1]}}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+							<label for="original">Введите слово или текст:
+								<textarea class="form-control" name="to_translate" id="original" placeholder="Введите слово или текст" required></textarea>
+							</label>
+							<a id="button_translate" class="btn-translate btn btn-primary" href="javascript:translate('', 'ru', 'textarea#original', 'textarea#translate');">Перевести<span class="loader">
+								<div id="circularG">
+									<div id="circularG_1" class="circularG">
+									</div>
+									<div id="circularG_2" class="circularG">
+									</div>
+									<div id="circularG_3" class="circularG">
+									</div>
+									<div id="circularG_4" class="circularG">
+									</div>
+									<div id="circularG_5" class="circularG">
+									</div>
+									<div id="circularG_6" class="circularG">
+									</div>
+									<div id="circularG_7" class="circularG">
+									</div>
+									<div id="circularG_8" class="circularG">
+									</div>
+								</div>
+							</span></a>
+							
+						</div>
+						<div class="col-md-6">
+							<div class="btn_lang btn-group" role="group">
+								<button id="dst-language" type="button" class="language btn btn-info active" value="">Русский</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								Другой
+								<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu lang_menu" role="menu">
+									<li><a class="dst-language" href="#" value="ru">Русский</a></li>
+									{% for lang in yandex_lang_list %}
+										<li><a class="dst-language" href="#" value="{{lang[0]}}">{{lang[1]}}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						<label for="translate">Перевод: <textarea class="form-control" name="translate" id="translate" readonly="">{% for text in translated_text %}{{ text }}{% endfor %}</textarea>
+						<img class="img-preload" src="{{ url_for('static', filename='img/load.gif') }}">
+					</label>
+				</div>
+			</div>
+		</form>
+		<p class="copyright">Переведено сервисом <a href="http://translate.yandex.ru/">«Яндекс.Перевод»</a></p>
+	</div>
+</div>
+</section>
+<script>
+	function translate(sourceLang, destLang, sourceId, destId) {
+
+
+		$(".img-preload").fadeIn(200); //Отображаем прелоадер на время запроса
+
+		$.post('/_translate', {
+			text: $(sourceId).val(),  //
+			sourceLang: sourceLang,  //Данные для запроса
+			destLang: destLang		//
+			}).done(function(translated) {  //Действие при успешном запросе
+				$(destId).val(translated['text']);  // Заменяем текст в поле Перевод
+				$('#language').html(translated['auto_lang'] + ' (Авто)').fadeIn();  //Отображаем текст источника если выбрано Автоопределение языка
+				$(".img-preload").fadeOut(200); //Убираем прелоадер
+			}).fail(function() {			//Действие при ошибке
+				$(".img-preload").fadeOut(200);
+				$(destId).val("Ошибка Максима");
+			});
+		};
+</script>
+{% endblock %}
