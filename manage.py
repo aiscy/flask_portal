@@ -4,6 +4,8 @@ from flask_portal import app
 
 manager = Manager(app)
 
+# TEST
+
 @manager.command
 def get_quote_of_day():
     """
