@@ -55,14 +55,14 @@ def close_db(error):
         g.sqlite_db.close()
 
 
-@app.before_request
-def auth():
-    if not session.get('logged_in'):
-        if request.environ.get('REMOTE_USER'):
-            session['logged_in'] = True
-            flash('Вы успешно авторизировались')
-        else:
-            abort(401)
+# @app.before_request
+# def auth():
+#     if not session.get('logged_in'):
+#         if request.environ.get('REMOTE_USER'):
+#             session['logged_in'] = True
+#             flash('Вы успешно авторизировались')
+#         else:
+#             abort(401)
 
 
 @app.route('/')
