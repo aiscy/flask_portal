@@ -75,6 +75,7 @@ def index():
 
 @app.route('/food_menu')
 def food_menu():
+    import re
     db = get_db()
     html = list(db.execute('SELECT html FROM food_menu').fetchone())
     app.logger.debug(html)
