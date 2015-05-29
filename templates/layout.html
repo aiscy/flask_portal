@@ -46,7 +46,13 @@
           {% endfor %}
           {% block body %}{% endblock %}
         </div>
-
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<p class="text-center">SlowSoft, <span class="year"></span></p>
+		</div>
+	</div>
+</footer>
     <script src="{{ url_for('static', filename='js/jquery-2.1.3.min.js') }}"></script>
   <!--[if lt IE 9]>
   <script src="{{ url_for('static', filename='js/html5shiv/es5-shim.min.js') }}"></script>

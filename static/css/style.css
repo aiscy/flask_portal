@@ -119,4 +119,15 @@ section {
 .header_menu a {
   text-transform: uppercase; }
 
+.food_menu tbody tr:first-child {
+  display: none; }
+.food_menu tbody tr td {
+  vertical-align: middle; }
+  .food_menu tbody tr td strong {
+    text-transform: uppercase;
+    font-size: 20px; }
+
+.footer {
+  padding: 20px 0; }
+
 /*# sourceMappingURL=style.css.map */
