@@ -4,14 +4,29 @@
 	<div class="row">
 	<h2>Обеденное меню</h2>
 	<div class="col-md-12">
-		<form action="null" method="post">
 	{% autoescape false %}
 		{{menu}}
-	{% endautoescape %}			
+	{% endautoescape %}
+				
+	<div class="row fromtest">
+		<form class="order_form">
+			<h3>Ваш заказ:</h3>
+				<div class="col-md-6">
+							<ol id="result"></ol>			
+				</div>
+				<div class="col-md-6">
+						  <div class="form-group">
+    <label for="InputCabinet">№ кабинета*</label>
+    <input type="text" class="form-control" id="InputCabinet" placeholder="Введите номер кабинета" required>
+  </div>
+						  <div class="form-group">
+    <label for="InputInitials">Ф.И.О.</label>
+    <input type="text" class="form-control" id="InputInitials" placeholder="Введите Ф.И.О.">
+  </div>
+							<button id="submit" type="button" class="btn btn-lg btn-success pull-right">Сформировать заказ</button>
+				</div>
 		</form>
-		<div id="result"></div>
-		<button id="submit">send</button>
-		<a href="mailto:test@tes.ru&subject=test&body=testestes%0Dsrdfgsreg%0Ddsfgserg">hhkjghkjgh</a>
+</div>
 	</div>
 	</div>
 </div>
