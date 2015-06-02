@@ -127,6 +127,8 @@ section {
   .food_menu tbody tr td strong {
     text-transform: uppercase;
     font-size: 20px; }
+.food_menu tbody .btn-cancel {
+  display: none; }
 
 .fromtest {
   background-color: #fff;
