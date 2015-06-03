@@ -57,18 +57,19 @@ $(document).ready(function () {
 		// Если товар уже есть, то прибавляем +1 к количеству
 		if ($('#result').find('li:contains("' + food + '")').html() != null) {
 			var total = parseInt($('#result').find('li:contains("' + food + '") span.price').text()) + price;
-			$('#result').find('li:contains("' + food + '") span.count').html(count + 'шт.');
-			$('#result').find('li:contains("' + food + '") span.price').html(total + 'руб.')
+			$('#result').find('li:contains("' + food + '") span.count').html(count + ' шт.');
+			$('#result').find('li:contains("' + food + '") span.price').html(total + ' руб.')
 		}
 		// Если нет, то добавляем в заказ
 		else {
 			foodID.addClass('success');
 			$('#result').append($('<li>' + food + '  <span class="count">' + count + ' шт.</span>  <span class="price">' + price + ' руб.</span></li>'));
+			$('button#submit').removeAttr('disabled')
 			//foodID.find('.btn-cancel').show();
 		};
 		
 		totalPrice += price;
-		$('#total').html(totalPrice + 'руб.');
+		$('#total').html(totalPrice + ' руб.');
 		
 		//Отображаем значок отмены
 		
@@ -79,7 +80,7 @@ $(document).ready(function () {
 
 	// Отправка заказа
 
-	$('#submit').click(function () {
+	$('#_submit').click(function () {
 		var n = 1;
 		var cabinet = $('#InputCabinet').val();
 		var initials = $('#InputInitials').val();
@@ -89,12 +90,53 @@ $(document).ready(function () {
 			n += 1;
 		});
 		
-		var email = 'maxim_pavlov@uraltep.ru';
+		var email = 'pavel_hmelnov@uraltep.ru';
 		var subject = 'ПИЦ УралТЭП Заказ';
 		var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message + '%0DСумма заказа: ' + totalPrice + ' руб.';
-		$('#test').attr('href', mailto_link);
+		$('#submit').attr('href', mailto_link);
 		var win = window.open(mailto_link, 'emailWindow');
 		if (win && win.open && !win.closed) win.close();
 	});
 
+	$('#order_form').validate({
+		
+		rules: {
+			cabinet:{
+				required: true,
+				rangelength: [2, 4],
+				number: true
+			},
+		},
+		messages: {
+			cabinet: {
+				required: "Это поле обязательно для заполнения",
+				rangelength: "Число должно быть от 2 до 4 цифр",
+				number: "Введите корректное число"
+			},
+		},
+		highlight: function(element, errorClass, validClass) {
+			$(element).addClass('error_input').removeClass(validClass);
+		},
+		unhighlight: function(element, errorClass, validClass) {
+			$(element).removeClass('error_input').addClass(validClass);
+		},	
+		
+		submitHandler: function(form) {
+			var n = 1;
+		var cabinet = $('#InputCabinet').val();
+		var initials = $('#InputInitials').val();
+		var body_message = 'Кабинет №' + cabinet + ' ' + initials + '%0D%0D';
+		$('#result li').each(function () {
+			body_message += n + '. ' + $(this).text() + '%0D';
+			n += 1;
+		});
+		
+		var email = 'pavel_hmelnov@uraltep.ru';
+		var subject = 'ПИЦ УралТЭП Заказ';
+		var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message + '%0DСумма заказа: ' + totalPrice + ' руб.';
+		$('#submit').attr('href', mailto_link);
+		var win = window.open(mailto_link, 'emailWindow');
+		if (win && win.open && !win.closed) win.close();
+		}
+	});
 });

@@ -8,8 +8,8 @@
 		{{menu}}
 	{% endautoescape %}
 				
-	<div class="row fromtest">
-		<form class="order_form">
+	<div class="row order_form">
+		<form id="order_form">
 			
 				<div class="col-md-6">
 						<h3>Ваш заказ:</h3>
@@ -17,15 +17,15 @@
 						<p>Общая сумма: <span id = "total" class="price"></span></p>			
 				</div>
 				<div class="col-md-6">
-						  <div class="form-group">
+						  <div class="form-group input_wrap">
     <label for="InputCabinet">№ кабинета*</label>
-    <input type="text" class="form-control" id="InputCabinet" placeholder="Введите номер кабинета" required>
+    <input type="text" class="form-control required" id="InputCabinet" name="cabinet" placeholder="Введите номер кабинета" required>
   </div>
-						  <div class="form-group">
+						  <div class="form-group input_wrap">
     <label for="InputInitials">Ф.И.О.</label>
-    <input type="text" class="form-control" id="InputInitials" placeholder="Введите Ф.И.О.">
+    <input type="text" class="form-control" id="InputInitials" name="init" placeholder="Введите Ф.И.О.">
   </div>
-							<button id="submit" type="button" class="btn btn-lg btn-success pull-right">Сформировать заказ</button>
+							<button id="submit" type="submit" class="btn btn-lg btn-success pull-right" disabled="disabled">Сформировать заказ</button>
 				</div>
 		</form>
 </div>

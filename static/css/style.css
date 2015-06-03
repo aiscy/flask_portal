@@ -16,9 +16,8 @@ h2 {
 .flash {
   padding: 10px; }
 
-.error {
-  padding: 10px; }
-
+/*.error
+ * padding: 10px */
 #translate_form label {
   font-weight: normal;
   display: block;
@@ -130,10 +129,30 @@ section {
 .food_menu tbody .btn-cancel {
   display: none; }
 
-.fromtest {
+.order_form {
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 20px; }
+  .order_form .input_wrap {
+    margin-bottom: 30px; }
+  .order_form #inputCabinet {
+    margin-bottom: 20px; }
+  .order_form .error {
+    font-size: 13px;
+    font-weight: normal;
+    color: #d9534f;
+    padding: 5px;
+    position: absolute; }
+  .order_form .error_input {
+    border-color: #d9534f;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483; }
+  .order_form .valid {
+    border-color: #3c763d;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgba(102, 177, 103, 0.95294); }
+  .order_form #result .count {
+    font-style: italic; }
+  .order_form #result .price {
+    font-weight: bold; }
 
 .footer {
   padding: 20px 0; }
