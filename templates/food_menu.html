@@ -1,18 +1,37 @@
 {% extends "layout.html" %}
 {% block body %}
+<section class="food">
 <div class="container">
 	<div class="row">
 	<h2>Обеденное меню</h2>
 	<div class="col-md-12">
-		<form action="null" method="post">
 	{% autoescape false %}
 		{{menu}}
-	{% endautoescape %}			
+	{% endautoescape %}
+				
+	<div class="row order_form">
+		<form id="order_form">
+			
+				<div class="col-md-6">
+						<h3>Ваш заказ:</h3>
+						<ol id="result"></ol>
+						<p>Общая сумма: <span id = "total" class="price"></span></p>			
+				</div>
+				<div class="col-md-6">
+						  <div class="form-group input_wrap">
+    <label for="InputCabinet">№ кабинета*</label>
+    <input type="text" class="form-control required" id="InputCabinet" name="cabinet" placeholder="Введите номер кабинета" required>
+  </div>
+						  <div class="form-group input_wrap">
+    <label for="InputInitials">Ф.И.О.</label>
+    <input type="text" class="form-control" id="InputInitials" name="init" placeholder="Введите Ф.И.О.">
+  </div>
+							<button id="submit" type="submit" class="btn btn-lg btn-success pull-right" disabled="disabled">Сформировать заказ</button>
+				</div>
 		</form>
-		<div id="result"></div>
-		<button id="submit">send</button>
-		<a href="mailto:test@tes.ru&subject=test&body=testestes%0Dsrdfgsreg%0Ddsfgserg">hhkjghkjgh</a>
+</div>
 	</div>
 	</div>
 </div>
+</section>
 {% endblock %}

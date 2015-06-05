@@ -16,9 +16,8 @@ h2 {
 .flash {
   padding: 10px; }
 
-.error {
-  padding: 10px; }
-
+/*.error
+ * padding: 10px */
 #translate_form label {
   font-weight: normal;
   display: block;
@@ -119,13 +118,42 @@ section {
 .header_menu a {
   text-transform: uppercase; }
 
-.food_menu tbody tr:first-child {
+.food h2 {
+  text-align: center; }
+.food .food_menu tbody tr:first-child {
   display: none; }
-.food_menu tbody tr td {
-  vertical-align: middle; }
-  .food_menu tbody tr td strong {
+.food .food_menu tbody tr td {
+  vertical-align: middle;
+  line-height: 30px; }
+  .food .food_menu tbody tr td strong {
     text-transform: uppercase;
     font-size: 20px; }
+.food .food_menu tbody .btn-cancel {
+  display: none; }
+.food .order_form {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px; }
+  .food .order_form .input_wrap {
+    margin-bottom: 30px; }
+  .food .order_form #inputCabinet {
+    margin-bottom: 20px; }
+  .food .order_form .error {
+    font-size: 13px;
+    font-weight: normal;
+    color: #d9534f;
+    padding: 5px;
+    position: absolute; }
+  .food .order_form .error_input {
+    border-color: #d9534f;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483; }
+  .food .order_form .valid {
+    border-color: #3c763d;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgba(102, 177, 103, 0.95294); }
+  .food .order_form #result .count {
+    font-style: italic; }
+  .food .order_form #result .price {
+    font-weight: bold; }
 
 .footer {
   padding: 20px 0; }

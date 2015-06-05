@@ -33,8 +33,8 @@ h2
 .flash 
 	padding: 10px
 
-.error 
-	padding: 10px
+/*.error 
+	padding: 10px*/
 
 #translate_form 
 	label 
@@ -151,16 +151,46 @@ section
 .header_menu a 
 	text-transform: uppercase
 
-.food_menu
-	tbody
-		tr
-			&:first-child
+.food
+	h2
+		text-align: center
+	.food_menu
+		tbody
+			tr
+				&:first-child
+					display: none
+				td
+					vertical-align: middle
+					line-height: 30px
+					strong
+						text-transform: uppercase
+						font-size: 20px
+			.btn-cancel
 				display: none
-			td
-				vertical-align: middle
-				strong
-					text-transform: uppercase
-					font-size: 20px
-
+	.order_form
+		background-color: #fff
+		border: 1px solid #ddd
+		padding: 20px
+		.input_wrap
+			margin-bottom: 30px
+		#inputCabinet
+			margin-bottom: 20px
+		.error
+			font-size: 13px
+			font-weight: normal
+			color: #d9534f
+			padding: 5px
+			position: absolute
+		.error_input
+			border-color: #d9534f
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483
+		.valid
+			border-color: #3c763d
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px rgba(102, 177, 103, 0.952941)
+		#result
+			.count
+				font-style: italic
+			.price
+				font-weight: bold
 .footer
 	padding: 20px 0
