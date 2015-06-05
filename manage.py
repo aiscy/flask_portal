@@ -53,7 +53,7 @@ def get_food_menu():
     # A list of tags to remove. Only the tags will be removed, their content will get pulled up into the parent tag.
     # Оставляем только таблицу с меню на завтра
     doc = cleaner.clean_html(doc)
-    html_new = html.tostring(E.DIV(E.TABLE(E.CLASS("table table-striped food_menu"), doc.cssselect('tbody')[-1])),
+    html_new = html.tostring(E.DIV(E.TABLE(E.CLASS("table table-striped table-hover food_menu"), doc.cssselect('tbody')[-1])),
                              encoding='unicode')
     try:
         db = sqlite3.connect(app.config['DATABASE'])

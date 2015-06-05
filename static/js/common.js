@@ -57,15 +57,15 @@ $(document).ready(function () {
 		// Если товар уже есть, то прибавляем +1 к количеству
 		if ($('#result').find('li:contains("' + food + '")').html() != null) {
 			var total = parseInt($('#result').find('li:contains("' + food + '") span.price').text()) + price;
-			$('#result').find('li:contains("' + food + '") span.count').html(count + ' шт.');
+			$('#result').find('li:contains("' + food + '") span.count').html(count + 'шт.');
 			$('#result').find('li:contains("' + food + '") span.price').html(total + ' руб.')
 		}
 		// Если нет, то добавляем в заказ
 		else {
 			foodID.addClass('success');
-			$('#result').append($('<li>' + food + '  <span class="count">' + count + ' шт.</span>  <span class="price">' + price + ' руб.</span></li>'));
+			$('#result').append($('<li>' + food + '  <span class="count">' + count + 'шт.</span>  <span class="price">' + price + ' руб.</span></li>'));
 			$('button#submit').removeAttr('disabled')
-			//foodID.find('.btn-cancel').show();
+//			foodID.find('.btn-cancel').show();
 		};
 		
 		totalPrice += price;
