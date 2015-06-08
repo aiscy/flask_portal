@@ -36,11 +36,14 @@ $(document).ready(function () {
 			var _table = $(this);
 			var _button = '<button class="btn btn-default btn-order" type="button">Заказать  <span class="badge"></span></button>';
 			var _cancelButton = '<button type="button" class="btn btn-danger btn-cancel" aria-label="Left Align"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+			var str_empty = / $/g;
 			_table.find('tbody tr:has("td strong")').append($('<td></td>'));
 			_table.find('tbody tr').not(':has("td strong")').append('<td class="edit">' + _button + _cancelButton + '</td>');
 			_table.find('tbody tr').has('td strong:contains("Комплекс")').find('td:last-child').addClass('edit').html(_button + _cancelButton);
 			_table.find('tbody tr').has('td strong:contains("Комплекс")').nextAll().find('td:last-child').html('<td></td>');
-			_table.find('tbody tr').has("td:first-child:empty").find('td:last-child').removeClass('edit').html('<td></td>');
+			var strMessage1 = document.getElementsByClassName("food_menu");
+strMessage1[0].innerHTML = strMessage1[0].innerHTML.replace(/<td> <\/td>/g,'<td><\/td>');
+			_table.find('tbody tr').has("td:first-child:empty").find('td:last-child').removeAttr('class').html('<td></td>');
 		});
 	};
 	TABLE.formwork('.table');
@@ -80,23 +83,23 @@ $(document).ready(function () {
 
 	// Отправка заказа
 
-	$('#_submit').click(function () {
-		var n = 1;
-		var cabinet = $('#InputCabinet').val();
-		var initials = $('#InputInitials').val();
-		var body_message = 'Кабинет №' + cabinet + ' ' + initials + '%0D%0D';
-		$('#result li').each(function () {
-			body_message += n + '. ' + $(this).text() + '%0D';
-			n += 1;
-		});
-		
-		var email = 'pavel_hmelnov@uraltep.ru';
-		var subject = 'ПИЦ УралТЭП Заказ';
-		var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message + '%0DСумма заказа: ' + totalPrice + ' руб.';
-		$('#submit').attr('href', mailto_link);
-		var win = window.open(mailto_link, 'emailWindow');
-		if (win && win.open && !win.closed) win.close();
-	});
+//	$('#_submit').click(function () {
+//		var n = 1;
+//		var cabinet = $('#InputCabinet').val();
+//		var initials = $('#InputInitials').val();
+//		var body_message = 'Кабинет №' + cabinet + ' ' + initials + '%0D%0D';
+//		$('#result li').each(function () {
+//			body_message += n + '. ' + $(this).text() + '%0D';
+//			n += 1;
+//		});
+//		
+//		var email = 'hmelnov@yandex.ru';
+//		var subject = 'ПИЦ УралТЭП Заказ';
+//		var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message + '%0DСумма заказа: ' + totalPrice + ' руб.';
+//		$('#submit').attr('href', mailto_link);
+//		var win = window.open(mailto_link, 'emailWindow');
+//		if (win && win.open && !win.closed) win.close();
+//	});
 
 	$('#order_form').validate({
 		
@@ -131,7 +134,7 @@ $(document).ready(function () {
 			n += 1;
 		});
 		
-		var email = 'pavel_hmelnov@uraltep.ru';
+		var email = 'hmelnov@yandex.ru';
 		var subject = 'ПИЦ УралТЭП Заказ';
 		var mailto_link = 'mailto:' + email + '?subject=' + subject + '&body=' + body_message + '%0DСумма заказа: ' + totalPrice + ' руб.';
 		$('#submit').attr('href', mailto_link);
