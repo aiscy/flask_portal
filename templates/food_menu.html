@@ -35,3 +35,7 @@
 </div>
 </section>
 {% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='libs/Validation/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/food_menu.js') }}"></script>
+{% endblock %}
