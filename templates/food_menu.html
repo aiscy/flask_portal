@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
+{% block title %}Обеденное меню{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block body %}
 <section class="food">
 <div class="container">
@@ -34,4 +38,8 @@
 	</div>
 </div>
 </section>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='libs/Validation/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/food_menu.js') }}"></script>
 {% endblock %}

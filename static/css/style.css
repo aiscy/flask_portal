@@ -120,16 +120,22 @@ section {
 
 .food h2 {
   text-align: center; }
-.food .food_menu tbody tr:first-child {
-  display: none; }
-.food .food_menu tbody tr td {
-  vertical-align: middle;
-  line-height: 30px; }
-  .food .food_menu tbody tr td strong {
-    text-transform: uppercase;
-    font-size: 20px; }
-.food .food_menu tbody .btn-cancel {
-  display: none; }
+.food .food_menu {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
+  .food .food_menu tbody {
+    cursor: default; }
+    .food .food_menu tbody tr td {
+      vertical-align: middle;
+      line-height: 30px; }
+      .food .food_menu tbody tr td strong {
+        text-transform: uppercase;
+        font-size: 20px; }
+    .food .food_menu tbody .btn-order {
+      cursor: pointer; }
+    .food .food_menu tbody .btn-cancel {
+      display: none; }
 .food .order_form {
   background-color: #fff;
   border: 1px solid #ddd;

@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
+{% block title %}Переводчик{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block body %}
 	<section class="translator">
 		<div class="container">
@@ -30,26 +34,7 @@
 							<label for="original">Введите слово или текст:
 								<textarea class="form-control" name="to_translate" id="original" placeholder="Введите слово или текст" required></textarea>
 							</label>
-							<a id="button_translate" class="btn-translate btn btn-primary" href="javascript:translate('', 'ru', 'textarea#original', 'textarea#translate');">Перевести<span class="loader">
-								<div id="circularG">
-									<div id="circularG_1" class="circularG">
-									</div>
-									<div id="circularG_2" class="circularG">
-									</div>
-									<div id="circularG_3" class="circularG">
-									</div>
-									<div id="circularG_4" class="circularG">
-									</div>
-									<div id="circularG_5" class="circularG">
-									</div>
-									<div id="circularG_6" class="circularG">
-									</div>
-									<div id="circularG_7" class="circularG">
-									</div>
-									<div id="circularG_8" class="circularG">
-									</div>
-								</div>
-							</span></a>
+							<a id="button_translate" class="btn-translate btn btn-primary" href="javascript:translate('', 'ru', 'textarea#original', 'textarea#translate');">Перевести</a>
 							
 						</div>
 						<div class="col-md-6">
@@ -76,24 +61,7 @@
 	</div>
 </div>
 </section>
-<script>
-	function translate(sourceLang, destLang, sourceId, destId) {
-
-
-		$(".img-preload").fadeIn(200); //Отображаем прелоадер на время запроса
-
-		$.post('/_translate', {
-			text: $(sourceId).val(),  //
-			sourceLang: sourceLang,  //Данные для запроса
-			destLang: destLang		//
-			}).done(function(translated) {  //Действие при успешном запросе
-				$(destId).val(translated['text']);  // Заменяем текст в поле Перевод
-				$('#language').html(translated['auto_lang'] + ' (Авто)').fadeIn();  //Отображаем текст источника если выбрано Автоопределение языка
-				$(".img-preload").fadeOut(200); //Убираем прелоадер
-			}).fail(function() {			//Действие при ошибке
-				$(".img-preload").fadeOut(200);
-				$(destId).val("Ошибка Максима");
-			});
-		};
-</script>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/translate.js') }}"></script>
 {% endblock %}
