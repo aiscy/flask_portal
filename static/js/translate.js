@@ -27,13 +27,14 @@ function translate(sourceLang, destLang, sourceId, destId) {
 
 	$(".img-preload").fadeIn(200); //Отображаем прелоадер на время запроса
 
-	$.post('/_translate', {
+	$.post('/service/_translate', {
 		text: $(sourceId).val(), //
 		sourceLang: sourceLang, //Данные для запроса
 		destLang: destLang //
 	}).done(function (translated) { //Действие при успешном запросе
 		$(destId).val(translated['text']); // Заменяем текст в поле Перевод
-		$('#language').html(translated['auto_lang'] + ' (Авто)').fadeIn(); //Отображаем текст источника если выбрано Автоопределение языка
+		var x = $('.lang_menu li a[value="' + translated['auto_lang'] + '"]').html();
+		$('#language').text(x + ' (Авто)').fadeIn(); //Отображаем текст источника если выбрано Автоопределение языка
 		$(".img-preload").fadeOut(200); //Убираем прелоадер
 	}).fail(function () { //Действие при ошибке
 		$(".img-preload").fadeOut(200);
