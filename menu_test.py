@@ -2,15 +2,12 @@ __author__ = 'pavlomv'
 from grab import Grab
 from lxml import html
 from lxml.html import clean
-from lxml.html import builder as E
-import re
-import collections
 import json
 
 db = None
 g = Grab()
 g.go('http://www.privet-bufet.ru/article/menyu-na-segodnya')
-request = g.doc.select('//div[@class="panda-article"]').html()
+request = g.doc.select('//div[@class="panda-article"]/table[2]').html()
 doc = html.document_fromstring(request)
 
 cleaner = clean.Cleaner(style=True, remove_tags=['p', 'em'])
@@ -24,48 +21,28 @@ for i in table:
         k = i.index(j)
         i.remove(j)
         i.insert(k, ' '.join(j.split()))
-# print(table)
 
-# menu = collections.OrderedDict(category='',
-#                 name='',
-#                 weight='',
-#                 price='')
-# menu = collections.OrderedDict()
-menu = []
-print(menu)
-category = None
 date = table.pop(0)[0]
+menu = []
+menu_complex = []
 for i in table:
-    # print(i[0], i[1], i[2])
+    # print(i[0])
+    if i[0] == 'Комплекс':
+        for j in table[table.index(i):]:
+            if j[2] != '':
+                # menu_complex_price = j[2].split('-')[0]
+                menu_complex = dict(category=j[0], content=[], price=j[2].split('-')[0])
+                continue
+            menu_complex['content'].append(j[0])
+        break
     if (i[1] and i[2]) == '' and i[0] != '':
         category = i[0]
         menu.append(dict(category=category, content=[]))
-        # print(menu)
         continue
-        # print(category)
+    elif i[0] == '':
+        continue
     menu[-1]['content'].append({'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]})
-    print(menu)
-    # menu.append(['category'] = {'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]})
-    # menu.append(collections.OrderedDict(category=category,
-    #                                     content=[{'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]}]))
-    # menu[category] = [{'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]}]
-
-
-
-# print(menu)
-
-
-to_json = collections.OrderedDict(
-    date=date,
-    menu=menu)
-# print(to_json)
-#
 with open('file.json', 'w') as file:
-    file.write(json.dumps(to_json, sort_keys=True))
+    file.write(json.dumps(dict(date=date, menu=menu, menu_complex=menu_complex), sort_keys=True))
 
-
-
-        # element[table.index(item)] = ' '.join(element.split())
-        # ' '.join(element.split()
-# print(table)
 
