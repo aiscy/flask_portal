@@ -3,7 +3,7 @@ import sqlite3
 import os
 import flask_sijax
 from flask import Flask, request, session, g, redirect, url_for, \
-                  abort, render_template, flash, jsonify
+                  abort, render_template, flash, jsonify, Response
 from yandex_translate import YandexTranslate
 # from py.sqlite_conn import connect_db
 
@@ -55,8 +55,14 @@ def index():
 def food_menu():
     db = get_db()
     html = list(db.execute('SELECT html FROM food_menu').fetchone())
-    app.logger.debug(html)
+    # app.logger.debug(html)
     return render_template('food_menu.html', menu=html[0])
+
+
+@app.route('/service/food_menu.json')
+def food_menu_json():
+    with open('file.json', 'r') as file:
+        return Response(response=file.read(), status=200, mimetype="application/json")
 
 
 
