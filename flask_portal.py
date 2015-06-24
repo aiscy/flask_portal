@@ -37,11 +37,14 @@ def close_db(error):
 def auth():
     if not session.get('logged_in'):
         if request.environ.get('REMOTE_USER'):
+            session['username'] = request.environ.get('REMOTE_USER')
             session['logged_in'] = True
             flash('Вы успешно авторизировались')
         else:
             if app.debug:
+                session['username'] = 'debuguser'
                 session['logged_in'] = True
+                flash('Вы авторизировались как {}'.format(session.get('username')))
             else:
                 abort(401)
 
