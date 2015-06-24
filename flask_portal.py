@@ -33,14 +33,17 @@ def close_db(error):
         g.sqlite_db.close()
 
 
-# @app.before_request
-# def auth():
-#     if not session.get('logged_in'):
-#         if request.environ.get('REMOTE_USER'):
-#             session['logged_in'] = True
-#             flash('Вы успешно авторизировались')
-#         else:
-#             abort(401)
+@app.before_request
+def auth():
+    if not session.get('logged_in'):
+        if request.environ.get('REMOTE_USER'):
+            session['logged_in'] = True
+            flash('Вы успешно авторизировались')
+        else:
+            if app.debug:
+                session['logged_in'] = True
+            else:
+                abort(401)
 
 
 @app.route('/')
@@ -94,6 +97,11 @@ def translate():
 app.route('/service/visio')
 def service_visio():
     return 1
+
+
+# app.route('/favicon.ico')
+# def favicon():
+#     return url_for('static', filename='favicon.ico')
 
 
 if __name__ == '__main__':
