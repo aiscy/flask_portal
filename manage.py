@@ -8,26 +8,16 @@ manager = Manager(app)
 
 @manager.command
 def get_quote_of_day():
-    """
-    Получаем цитату дня для вывода на сайте
-    """
-    db = None
+    """Получаем цитату дня для вывода на сайте"""
     import requests
-    import sqlite3
+    from models import QuoteOfDay, db
 
-    request = requests.get(url='http://api.forismatic.com/api/1.0/',
+    r = requests.get(url='http://api.forismatic.com/api/1.0/',
                            params=dict(method='getQuote',
                                        format='json',
                                        lang='ru')).json()
-    try:
-        db = sqlite3.connect(app.config['DATABASE'])
-        cursor = db.cursor()
-        cursor.executemany('INSERT OR REPLACE INTO quote_of_day (id, quote_text, quote_author) VALUES (?, ?, ?)',
-                           [(1, request.get('quoteText'), request.get('quoteAuthor'))])
-        db.commit()
-    finally:
-        db.close()
-
+    db.session.add(QuoteOfDay(r.get('quoteText'), r.get('quoteAuthor')))
+    db.session.commit()
 
 @manager.command
 def get_food_menu():
@@ -35,7 +25,6 @@ def get_food_menu():
     from lxml import html
     from lxml.html import clean
     from models import FoodMenu, db
-    import json
 
     g = Grab()
     g.go('http://www.privet-bufet.ru/article/menyu-na-segodnya')
