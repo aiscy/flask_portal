@@ -2,8 +2,9 @@ import sqlite3
 # import flask_sijax
 from flask import Flask, request, session, g, redirect, url_for, \
     abort, render_template, flash, jsonify, Response
+from sqlalchemy import desc
 from yandex_translate import YandexTranslate
-from models import FoodMenu, db
+from models import FoodMenu, YandexLang, QuoteOfDay, db
 
 app = Flask(__name__)
 app.config.from_pyfile('configuration.py')
@@ -43,17 +44,15 @@ def auth():
             if app.debug:
                 session['user_name'] = 'DebugUser'
                 session['logged_in'] = True
-                flash('Вы авторизировались как {}'.format(session.get('username')))
+                flash('Вы авторизировались как {}'.format(session.get('user_name')))
             else:
                 abort(401)
 
 
 @app.route('/')
 def index():
-    db = get_db()
-    cur = list(db.execute('SELECT quote_text, quote_author FROM quote_of_day').fetchone())
-    # app.logger.debug(cur[0], cur[1])
-    return render_template('index.html', quote_text=cur[0], quote_author=cur[1])
+    req = QuoteOfDay.query.get(1)
+    return render_template('index.html', quote_text=req.quote_text, quote_author=req.quote_author)
 
 
 @app.route('/service/food_menu/')
@@ -84,9 +83,11 @@ def process_translate():
 
 @app.route('/service/translate/', methods=['GET'])
 def translate():
-    db = get_db()
-    yandex_lang_list = list(db.execute('SELECT * FROM yandex_lang ORDER BY language_full'))
-    return render_template('translate.html', yandex_lang_list=yandex_lang_list)
+    req = YandexLang.query.order_by(YandexLang.language_full)
+    print(req)
+    # db = get_db()
+    # yandex_lang_list = list(db.execute('SELECT * FROM yandex_lang ORDER BY language_full'))
+    return render_template('translate.html', yandex_lang_list=req)
 
 
 # Набросок RESTful API
