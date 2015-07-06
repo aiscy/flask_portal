@@ -1,5 +1,5 @@
 __author__ = 'pavlomv'
-from flask.ext.script import Manager
+from flask_script import Manager
 from flask_portal import app
 
 manager = Manager(app)
@@ -31,39 +31,52 @@ def get_quote_of_day():
 
 @manager.command
 def get_food_menu():
-    """
-    Грабим обеденное меню:D и записываем результат в базу
-    """
-    import sqlite3
-    import re
     from grab import Grab
     from lxml import html
     from lxml.html import clean
-    from lxml.html import builder as E
+    from models import FoodMenu, db
+    import json
 
-    db = None
     g = Grab()
     g.go('http://www.privet-bufet.ru/article/menyu-na-segodnya')
-    request = g.doc.select('//div[@class="panda-article"]').html()
+    request = g.doc.select('//div[@class="panda-article"]/table[2]').html()
     doc = html.document_fromstring(request)
+
     cleaner = clean.Cleaner(style=True, remove_tags=['p', 'em'])
-    # style:
-    # Removes any style tags or attributes.
-    # remove_tags:
-    # A list of tags to remove. Only the tags will be removed, their content will get pulled up into the parent tag.
-    # Оставляем только таблицу с меню на завтра
     doc = cleaner.clean_html(doc)
-    html_new = html.tostring(
-        E.DIV(E.TABLE(E.CLASS("table table-striped table-hover food_menu"), doc.cssselect('tbody')[-1])),
-        encoding='unicode')
-    try:
-        db = sqlite3.connect(app.config['DATABASE'])
-        cursor = db.cursor()
-        cursor.executemany('INSERT OR REPLACE INTO food_menu (id, html) VALUES (?, ?)',
-                           [(1, re.sub(r'\s{2,}', ' ', html_new))])
-        db.commit()
-    finally:
-        db.close()
+    table = []
+    for row in doc.cssselect("tr"):
+        tds = row.cssselect("td")
+        table.append([tds[0].text_content(), tds[1].text_content(), tds[2].text_content()])
+    for i in table:
+        for j in i:
+            k = i.index(j)
+            i.remove(j)
+            i.insert(k, ' '.join(j.split()))
+
+    date = table.pop(0)[0]
+    menu = []
+    menu_complex = []
+    for i in table:
+        # print(i[0])
+        if i[0] == 'Комплекс':
+            for j in table[table.index(i):]:
+                if j[2] != '':
+                    # menu_complex_price = j[2].split('-')[0]
+                    menu_complex = dict(category=j[0], content=[], price=j[2].split('-')[0])
+                    continue
+                menu_complex['content'].append(j[0])
+            break
+        if (i[1] and i[2]) == '' and i[0] != '':
+            category = i[0]
+            menu.append(dict(category=category, content=[]))
+            continue
+        elif i[0] == '':
+            continue
+        menu[-1]['content'].append({'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]})
+
+    db.session.add(FoodMenu(date, menu, menu_complex))
+    db.session.commit()
 
 
 @manager.command
