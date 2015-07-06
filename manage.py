@@ -108,21 +108,15 @@ def get_picture_of_day():
 @manager.command
 def get_yandex_lang():
     """Получаем список доступных для перевода языков с Яндекса"""
-    import sqlite3
     import requests
+    from models import YandexLang, db
 
-    db = None
-    try:
-        r = requests.get('https://translate.yandex.net/api/v1.5/tr.json/getLangs?key={}&ui=ru') \
-            .json().get('langs').format(app.config['API_YANDEX_TRANSLATE_KEY'])
-        db = sqlite3.connect(app.config['DATABASE'])
-        cursor = db.cursor()
-        cursor.executemany('INSERT INTO yandex_lang VALUES (?,?)', r.items())
-        db.commit()
-        # cursor.execute('SELECT quote_text, quote_author FROM quote_of_day ORDER BY quote_text')
-        # cursor.execute('SELECT * FROM yandex_lang ORDER BY language_full')
-    finally:
-        db.close()
+    url = 'https://translate.yandex.net/api/v1.5/tr.json/getLangs?key={}&ui=ru' \
+        .format(app.config['API_YANDEX_TRANSLATE_KEY'])
+    r = requests.get(url).json().get('langs')
+    for key, value in r.items():
+        db.session.add(YandexLang(key, value))
+    db.session.commit()
 
 
 if __name__ == '__main__':
