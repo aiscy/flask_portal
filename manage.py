@@ -21,6 +21,7 @@ def get_quote_of_day():
 
 @manager.command
 def get_food_menu():
+    """Получаем обеденное меню, созданное из doc, где текст выровнен пробелами, и приводим в нормальный вид"""
     from grab import Grab
     from lxml import html
     from lxml.html import clean
