@@ -3,24 +3,24 @@ $(document).ready(function() {
 	// Разметка обеденного меню
 	var TABLE = {};
 	var totalPrice = 0;
-	TABLE.formwork = function (table) {
-		var $tables = $(table);
-
-		$tables.each(function () {
-			var _table = $(this);
-			var _button = '<button class="btn btn-default btn-order" type="button">Заказать  <span class="badge"></span></button>'; // Разметка кнопки 'Заказать'
-			var _cancelButton = '<button type="button" class="btn btn-danger btn-cancel" aria-label="Left Align"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'; // Разметка кнопки 'Отмена'
-
-			_table.find('tbody tr:has("td strong")').append($('<td></td>'));
-			_table.find('tbody tr').not(':has("td strong")').append('<td class="edit">' + _button + _cancelButton + '</td>');
-			_table.find('tbody tr').has('td strong:contains("Комплекс")').find('td:last-child').addClass('edit').html(_button + _cancelButton);
-			_table.find('tbody tr').has('td strong:contains("Комплекс")').nextAll().find('td:last-child').removeAttr("class").html('');
-			var strMessage1 = document.getElementsByClassName("food_menu");
-strMessage1[0].innerHTML = strMessage1[0].innerHTML.replace(/<td> <\/td>/g,'<td><\/td>');
-			_table.find('tbody tr').has("td:first-child:empty").find('td:last-child').removeAttr('class').html('<td></td>');
-		});
-	};
-	TABLE.formwork('.table');
+//	TABLE.formwork = function (table) {
+//		var $tables = $(table);
+//
+//		$tables.each(function () {
+//			var _table = $(this);
+//			var _button = '<button class="btn btn-default btn-order" type="button">Заказать  <span class="badge"></span></button>'; // Разметка кнопки 'Заказать'
+//			var _cancelButton = '<button type="button" class="btn btn-danger btn-cancel" aria-label="Left Align"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'; // Разметка кнопки 'Отмена'
+//
+//			_table.find('tbody tr:has("td strong")').append($('<td></td>'));
+//			_table.find('tbody tr').not(':has("td strong")').append('<td class="edit">' + _button + _cancelButton + '</td>');
+//			_table.find('tbody tr').has('td strong:contains("Комплекс")').find('td:last-child').addClass('edit').html(_button + _cancelButton);
+//			_table.find('tbody tr').has('td strong:contains("Комплекс")').nextAll().find('td:last-child').removeAttr("class").html('');
+//			var strMessage1 = document.getElementsByClassName("food_menu");
+//strMessage1[0].innerHTML = strMessage1[0].innerHTML.replace(/<td> <\/td>/g,'<td><\/td>');
+//			_table.find('tbody tr').has("td:first-child:empty").find('td:last-child').removeAttr('class').html('<td></td>');
+//		});
+//	};
+//	TABLE.formwork('.table');
 
 	// Событие на нажатие кнопки заказать
 
