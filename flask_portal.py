@@ -6,6 +6,7 @@ from sqlalchemy import desc
 from yandex_translate import YandexTranslate
 from models import FoodMenu, YandexLang, QuoteOfDay, db
 
+
 app = Flask(__name__)
 app.config.from_pyfile('configuration.py')
 db.init_app(app)
@@ -57,10 +58,10 @@ def index():
 
 @app.route('/service/food_menu/')
 def food_menu():
-    db = get_db()
-    html = list(db.execute('SELECT html FROM food_menu').fetchone())
+    # db = get_db()
+    # html = list(db.execute('SELECT html FROM food_menu').fetchone())
     # app.logger.debug(html)
-    return render_template('food_menu.html', menu=html[0])
+    return render_template('food_menu.html')
 
 
 @app.route('/service/_translate', methods=['POST'])
