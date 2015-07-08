@@ -15,25 +15,6 @@ yandex_translate = YandexTranslate(app.config['API_YANDEX_TRANSLATE_KEY'])
 # app.config['SIJAX_JSON_URI'] = '/static/js/sijax/json2.js'
 
 
-def connect_db():
-    rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.Row
-    app.logger.debug('Connected to db.')
-    return rv
-
-
-def get_db():
-    if not hasattr(g, 'sqlite_db'):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
-
-
 @app.before_request
 def auth():
     if not session.get('logged_in'):
@@ -58,9 +39,6 @@ def index():
 
 @app.route('/service/food_menu/')
 def food_menu():
-    # db = get_db()
-    # html = list(db.execute('SELECT html FROM food_menu').fetchone())
-    # app.logger.debug(html)
     return render_template('food_menu.html')
 
 
@@ -84,10 +62,8 @@ def process_translate():
 
 @app.route('/service/translate/', methods=['GET'])
 def translate():
-    req = YandexLang.query.order_by(YandexLang.language_full)
-    print(req)
-    # db = get_db()
-    # yandex_lang_list = list(db.execute('SELECT * FROM yandex_lang ORDER BY language_full'))
+    req = YandexLang.query.with_entities(YandexLang.language_code, YandexLang.language_full) \
+        .order_by(YandexLang.language_full).all()
     return render_template('translate.html', yandex_lang_list=req)
 
 
@@ -99,8 +75,7 @@ def food_menu_json():
         code=200,
         date=req.date,
         menu=req.menu,
-        menu_complex=req.menu_complex
-    ))
+        menu_complex=req.menu_complex))
 
 
 if __name__ == '__main__':
