@@ -13,11 +13,16 @@ def get_quote_of_day():
     from models import QuoteOfDay, db
 
     r = requests.get(url='http://api.forismatic.com/api/1.0/',
-                           params=dict(method='getQuote',
-                                       format='json',
-                                       lang='ru')).json()
-    db.session.add(QuoteOfDay(r.get('quoteText'), r.get('quoteAuthor')))
+                     params=dict(method='getQuote',
+                                 format='json',
+                                 lang='ru')).json()
+    req = QuoteOfDay.query.get(1)
+    if req:
+        req.quote_text, req.quote_author = r.get('quoteText'), r.get('quoteAuthor')
+    else:
+        db.session.add(QuoteOfDay(r.get('quoteText'), r.get('quoteAuthor')))
     db.session.commit()
+
 
 @manager.command
 def get_food_menu():
@@ -48,12 +53,10 @@ def get_food_menu():
     menu = []
     menu_complex = []
     for i in table:
-        # print(i[0])
         if i[0] == 'Комплекс':
             for j in table[table.index(i):]:
                 if j[2] != '':
-                    # menu_complex_price = j[2].split('-')[0]
-                    menu_complex = dict(category=j[0], content=[], price=j[2].split('-')[0])
+                    menu_complex = dict(category=j[0], content=[], price=int(j[2].split('-')[0]), count=0)
                     continue
                 menu_complex['content'].append(j[0])
             break
@@ -63,9 +66,12 @@ def get_food_menu():
             continue
         elif i[0] == '':
             continue
-        menu[-1]['content'].append({'name': i[0], 'weight': i[1], 'price': i[2].split('-')[0]})
-
-    db.session.add(FoodMenu(date, menu, menu_complex))
+        menu[-1]['content'].append(dict(name=i[0], weight=i[1], price=int(i[2].split('-')[0]), count=0))
+    r = FoodMenu.query.get(1)
+    if r:
+        r.date, r.menu, r.menu_complex = date, menu, menu_complex
+    else:
+        db.session.add(FoodMenu(date, menu, menu_complex))
     db.session.commit()
 
 
