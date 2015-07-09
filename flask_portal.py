@@ -70,7 +70,7 @@ def translate():
 # Набросок RESTful API
 @app.route('/api/v1/service/foodmenu', methods=['GET'])
 def food_menu_json():
-    req = FoodMenu.query.get(5)
+    req = FoodMenu.query.get(1)
     return jsonify(dict(
         code=200,
         date=req.date,
