@@ -24,36 +24,36 @@ $(document).ready(function() {
 
 	// Событие на нажатие кнопки заказать
 
-	$('.food_menu tr').has('td.edit').click(function () {
-		var foodID = $(this);
-		var price = parseInt(foodID.find('td:nth-child(3)').text(),10);
-		var count = foodID.find('.badge').text(); //Счетчик кол-ва заказа
-		var food = foodID.find('td:first-child').text();  //Возвращает наименование выбранного товара
-		foodID.find('.badge').text(++count); //При клике, добавляется +1 к счетчику
+//	$('.food_menu tr').has('td.edit').click(function () {
+//		var foodID = $(this);
+//		var price = parseInt(foodID.find('td:nth-child(3)').text(),10);
+//		var count = foodID.find('.badge').text(); //Счетчик кол-ва заказа
+//		var food = foodID.find('td:first-child').text();  //Возвращает наименование выбранного товара
+//		foodID.find('.badge').text(++count); //При клике, добавляется +1 к счетчику
 		
-		// Если товар уже есть, то прибавляем +1 к количеству
-		if ($('#result').find('li:contains("' + food + '")').html() != null) {
-			var total = parseInt($('#result').find('li:contains("' + food + '") span.price').text()) + price;
-			$('#result').find('li:contains("' + food + '") span.count').html(count + 'шт.');
-			$('#result').find('li:contains("' + food + '") span.price').html(total + ' руб.')
-		}
-		// Если нет, то добавляем в заказ
-		else {
-			foodID.addClass('success');
-			$('#result').append($('<li>' + food + '  <span class="count">' + count + 'шт.</span>  <span class="price">' + price + ' руб.</span></li>'));
-			$('button#submit').removeAttr('disabled')
-//			foodID.find('.btn-cancel').show();
-		};
+//		// Если товар уже есть, то прибавляем +1 к количеству
+//		if ($('#result').find('li:contains("' + food + '")').html() != null) {
+//			var total = parseInt($('#result').find('li:contains("' + food + '") span.price').text()) + price;
+//			$('#result').find('li:contains("' + food + '") span.count').html(count + 'шт.');
+//			$('#result').find('li:contains("' + food + '") span.price').html(total + ' руб.')
+//		}
+//		// Если нет, то добавляем в заказ
+//		else {
+//			foodID.addClass('success');
+//			$('#result').append($('<li>' + food + '  <span class="count">' + count + 'шт.</span>  <span class="price">' + price + ' руб.</span></li>'));
+//			$('button#submit').removeAttr('disabled')
+////			foodID.find('.btn-cancel').show();
+//		};
 		
-		totalPrice += price;
-		$('#total').html(totalPrice + ' руб.');
+//		totalPrice += price;
+//		$('#total').html(totalPrice + ' руб.');
 		
 		//Отображаем значок отмены
-		
-	});
-	$('.btn-cancel').click(function() {
-		$(this).parent().find('.badge').text('0');
-	});
+//		
+//	});
+//	$('.btn-cancel').click(function() {
+//		$(this).parent().find('.badge').text('0');
+//	});
 
 	// Отправка заказа, валидация
 

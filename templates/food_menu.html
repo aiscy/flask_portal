@@ -1,34 +1,42 @@
 {% extends "layout.html" %} {% block title %}Обеденное меню{% endblock %} {% block head %} {{ super() }}
 <script src="{{ url_for('static', filename='js/angular/angular.min.js') }}"></script>
 {% endblock %} {% block body %}
+{% raw %}
 <section class="food" ng-app="food">
 	<div class="container" ng-controller="MainController">
 		<div class="row">
 			<h2>Обеденное меню</h2>
 			<div class="col-md-12">
-				{% autoescape false %} {{menu}} {% endautoescape %}
-{% raw %}
 
-<table class="table table-striped table-hover food_menu">
-	<tbody  ng-repeat="i in foodMenu.menu">
+
+<table class="table .table-responsive table-striped table-hover food_menu">
+	<tbody  ng-repeat="i in menus.menu">
 				<tr>
-			<td colspan="4"><strong>{{ i.category}}</strong></td>
+			<td colspan="5"><strong>{{ i.category}}</strong></td>
 		</tr>
 		<tr ng-repeat="j in i.content">
 			<td>{{ j.name}}</td>
+			<td>
+			<button ng-click="minus($parent.$index,$index)" class="btn btn-default btn-sm glyphicon glyphicon-minus"></button>
+                    <button ng-click="plus($parent.$index,$index)" class="btn btn-default btn-sm glyphicon glyphicon-plus"></button>
+			</td>
+			<td><input type="text" ng-model="j.count" class="form-control" style="width:60px"></td>
 			<td>{{ j.weight}}</td>
-			<td>{{ j.price}} руб.</td>
-			<td class="edit"><button class="btn btn-default btn-order" type="button">Заказать  <span class="badge"></span></button></td>
+			<td>{{ j.price }} руб.</td>
 		</tr>
 	</tbody>
 	<tbody>
 		<tr>
-		<td colspan="2"><strong>Комплекс</strong></td>
-		<td>{{ foodMenu.menu_complex.price}} руб.</td>
-		<td class="edit"><button class="btn btn-default btn-order" type="button">Заказать  <span class="badge"></span></button></td>		
+		<td><strong>Комплекс</strong></td>
+					<td>
+			<button ng-click="complexMinus()" class="btn btn-default btn-sm glyphicon glyphicon-minus"></button>
+                    <button ng-click="complexPlus()" class="btn btn-default btn-sm glyphicon glyphicon-plus"></button>
+			</td>
+			<td colspan="2"><input type="text" ng-model="menus.menu_complex.count" class="form-control" style="width:60px"></td>
+		<td>{{ menus.menu_complex.price}} руб.</td>
 		</tr>
-		<tr ng-repeat="i in foodMenu.menu_complex.content">
-			<td colspan="4">{{i}}</td>
+		<tr ng-repeat="y in menus.menu_complex.content">
+			<td colspan="5">{{y}}</td>
 		</tr>
 		
 	</tbody>
@@ -36,8 +44,8 @@
 			
 			
 				
-				
-{% endraw %}
+<span>{{ total() }}</span>
+
 
 
 				<div class="row order_form">
@@ -45,7 +53,13 @@
 
 						<div class="col-md-6">
 							<h3>Ваш заказ:</h3>
-							<ol id="result"></ol>
+							<ol id="result">
+								<ul ng-repeat="x in items_cart()">
+								<span>{{x.id}}</span>
+								<span>{{x.count}} шт.</span>
+								<span>{{x.idTotal }} руб.</span>
+								</ul>
+							</ol>
 							<p>Общая сумма: <span id="total" class="price"></span>
 							</p>
 						</div>
@@ -58,7 +72,7 @@
 								<label for="InputInitials">Ф.И.О.</label>
 								<input type="text" class="form-control" id="InputInitials" name="init" placeholder="Введите Ф.И.О.">
 							</div>
-							<button id="submit" type="submit" class="btn btn-lg btn-success pull-right" disabled="disabled">Сформировать заказ</button>
+							<button id="submit" type="submit" class="btn btn-lg btn-success pull-right" ng-disabled="">Сформировать заказ</button>
 						</div>
 					</form>
 				</div>
@@ -66,6 +80,7 @@
 		</div>
 	</div>
 </section>
+{% endraw %}
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='libs/Validation/jquery.validate.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/food_menu.js') }}"></script>

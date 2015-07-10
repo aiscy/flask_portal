@@ -38,6 +38,6 @@ function translate(sourceLang, destLang, sourceId, destId) {
 		$(".img-preload").fadeOut(200); //Убираем прелоадер
 	}).fail(function () { //Действие при ошибке
 		$(".img-preload").fadeOut(200);
-		$(destId).val("Ошибка Максима");
+		$(destId).val("Ошибка Максима Валерьевича");
 	});
 };
