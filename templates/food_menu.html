@@ -2,6 +2,7 @@
 <script src="{{ url_for('static', filename='js/angular/angular.min.js') }}"></script>
 {% endblock %} {% block body %} {% raw %}
 <section class="food" ng-app="food">
+	
 	<div class="container" ng-controller="MainController">
 		<div class="row">
 			<h2>Обеденное меню</h2>
@@ -84,5 +85,4 @@
 <script src="{{ url_for('static', filename='js/food_menu.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular/app.js') }}"></script>
 <script src="{{ url_for('static', filename='js/angular/controllers/MainController.js') }}"></script>
-<script src="{{ url_for('static', filename='js/angular/services/foods.js') }}"></script>
 {% endblock %}

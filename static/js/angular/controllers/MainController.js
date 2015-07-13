@@ -1,11 +1,12 @@
 app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 	'use strict';
-	
-			$http.get('/api/v1/service/foodmenu').success(function (data) {return $scope.menus = data; });
+
+	var promise = $http.get('/api/v1/service/foodmenu').success(function (data) {
+		return $scope.menus = data;
+	});
 
 
-	
-	
+	promise.then(function (data) {
 		$scope.minus = function (parentIndex, index) {
 			if ($scope.menus.menu[parentIndex].content[index].count > 0) {
 				//				$scope.cartform.$setDirty();
@@ -29,41 +30,44 @@ app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 			items_cart();
 		};
 
-	// подсчет итоговой суммы
+		// подсчет итоговой суммы
 
-	$scope.total = function () {
-		var total = 0;
-		angular.forEach($scope.menus.menu, function (menuObj,index) {
-			angular.forEach(menuObj.content, function (value) {
-				total += value.count * value.price;
+		$scope.total = function () {
+			var total = 0;
+			angular.forEach($scope.menus.menu, function (menuObj, index) {
+				angular.forEach(menuObj.content, function (value) {
+					total += value.count * value.price;
+				});
 			});
-		});
-		total += $scope.menus.menu_complex.count * $scope.menus.menu_complex.price;
-		return total;
-	};
+			total += $scope.menus.menu_complex.count * $scope.menus.menu_complex.price;
+			return total;
+		};
 
-	// содержимое корзины
-	
-	
-	function items_cart() {
+		// содержимое корзины
+
+
+		function items_cart() {
 			$scope.items = [];
 			angular.forEach($scope.menus.menu, function (menuObj, index) {
-			angular.forEach(menuObj.content, function (value) {
-				if (value.count > 0) {
-					$scope.items.push({
-						id: value.name,
-						count: value.count,
-						idTotal: value.count * value.price
-					});
-				}
+				angular.forEach(menuObj.content, function (value) {
+					if (value.count > 0) {
+						$scope.items.push({
+							id: value.name,
+							count: value.count,
+							idTotal: value.count * value.price
+						});
+					}
+				});
 			});
-		});
-		if ($scope.menus.menu_complex.count > 0) {
-			$scope.items.push({
-				id: $scope.menus.menu_complex.category,
-				count: $scope.menus.menu_complex.count,
-				idTotal: $scope.menus.menu_complex.count * $scope.menus.menu_complex.price
-			});
-		}
-	};
+			if ($scope.menus.menu_complex.count > 0) {
+				$scope.items.push({
+					id: $scope.menus.menu_complex.category,
+					count: $scope.menus.menu_complex.count,
+					idTotal: $scope.menus.menu_complex.count * $scope.menus.menu_complex.price
+				});
+			}
+		};
+	});
+
+
 }]);
