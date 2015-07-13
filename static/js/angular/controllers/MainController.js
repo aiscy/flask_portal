@@ -1,28 +1,32 @@
-app.controller('MainController', ['$scope', 'foods', function ($scope, foods) {
+app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 	'use strict';
-	foods.success(function (data) {
-		$scope.menus = data;
+	
+			$http.get('/api/v1/service/foodmenu').success(function (data) {return $scope.menus = data; });
 
-	});
+
 	
 	
 		$scope.minus = function (parentIndex, index) {
 			if ($scope.menus.menu[parentIndex].content[index].count > 0) {
 				//				$scope.cartform.$setDirty();
 				$scope.menus.menu[parentIndex].content[index].count--;
+				items_cart();
 			}
 		};
 		$scope.plus = function (parentIndex, index) {
 			//			$scope.cartform.$setDirty();
 			$scope.menus.menu[parentIndex].content[index].count++;
+			items_cart();
 		};
 		$scope.complexMinus = function () {
 			if ($scope.menus.menu_complex.count > 0) {
 				$scope.menus.menu_complex.count--;
+				items_cart();
 			}
 		};
 		$scope.complexPlus = function () {
 			$scope.menus.menu_complex.count++;
+			items_cart();
 		};
 
 	// подсчет итоговой суммы
@@ -34,19 +38,19 @@ app.controller('MainController', ['$scope', 'foods', function ($scope, foods) {
 				total += value.count * value.price;
 			});
 		});
-		console.log($scope.menus)
 		total += $scope.menus.menu_complex.count * $scope.menus.menu_complex.price;
 		return total;
 	};
 
 	// содержимое корзины
-
-	$scope.items_cart = function () {
-		var items = [];
-		angular.forEach($scope.menus.menu, function (menuObj, index) {
+	
+	
+	function items_cart() {
+			$scope.items = [];
+			angular.forEach($scope.menus.menu, function (menuObj, index) {
 			angular.forEach(menuObj.content, function (value) {
 				if (value.count > 0) {
-					items.push({
+					$scope.items.push({
 						id: value.name,
 						count: value.count,
 						idTotal: value.count * value.price
@@ -55,12 +59,11 @@ app.controller('MainController', ['$scope', 'foods', function ($scope, foods) {
 			});
 		});
 		if ($scope.menus.menu_complex.count > 0) {
-			items.push({
+			$scope.items.push({
 				id: $scope.menus.menu_complex.category,
 				count: $scope.menus.menu_complex.count,
 				idTotal: $scope.menus.menu_complex.count * $scope.menus.menu_complex.price
 			});
 		}
-		return items;
 	};
 }]);
