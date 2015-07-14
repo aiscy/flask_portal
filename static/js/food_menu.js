@@ -30,7 +30,7 @@ $(document).ready(function() {
 		var initials = $('#InputInitials').val();
 		var body_message = 'Кабинет №' + cabinet + ' ' + initials + '%0D%0D';
 		$('#result li').each(function () {
-			body_message += n + '. ' + $(this).text() + '%0D';
+			body_message += n + '. ' + $(this).find('span:first-child').text() + ' (' + $(this).find('span:nth-child(2)').text() + ') ' +$(this).find('span:last-child').text() + '%0D';
 			n += 1;
 		});
 		
