@@ -1,10 +1,15 @@
 {% extends "layout.html" %} {% block title %}Обеденное меню{% endblock %} {% block head %} {{ super() }}
 <script src="{{ url_for('static', filename='js/angular/angular.min.js') }}"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.js"></script>
 {% endblock %} {% block body %} {% raw %}
 <section class="food" ng-app="food">
-	
-	<div class="container" ng-controller="MainController">
-		<div class="row">
+<!--
+	<div class="test wrap" ng-show="loading">
+		<img src="https://www.google.ru/logos/doodles/2015/new-horizons-pluto-flyby-5641113681526784-res.png">
+	</div>
+-->
+
+	<div class="container test" ng-controller="MainController" ng-hide="loading" ng-cloak>
 			<h2>Обеденное меню</h2>
 			<div class="col-md-12">
 
@@ -77,7 +82,7 @@
 					</form>
 				</div>
 			</div>
-		</div>
+		
 	</div>
 </section>
 {% endraw %} {% endblock %} {% block scripts %}

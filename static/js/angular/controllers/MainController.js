@@ -1,9 +1,17 @@
 app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
 	'use strict';
-
+	$scope.loading = true;
 	var promise = $http.get('/api/v1/service/foodmenu').success(function (data) {
 		return $scope.menus = data;
-	});
+	})
+    .catch(function (err) {
+      // Log error somehow.
+    })
+    .finally(function () {
+      // Hide loading spinner whether our call succeeded or failed.
+      $scope.loading = false;
+		$scope.myStyle={'opacity': '1'}
+    });
 
 
 	promise.then(function (data) {
