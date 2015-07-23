@@ -27,6 +27,8 @@ def get_quote_of_day():
 @manager.command
 def get_food_menu():
     """Получаем обеденное меню, созданное из doc, где текст выровнен пробелами, и приводим в нормальный вид"""
+    import datetime
+    import re
     from grab import Grab
     from lxml import html
     from lxml.html import clean
@@ -34,9 +36,15 @@ def get_food_menu():
 
     g = Grab()
     g.go('http://www.privet-bufet.ru/article/menyu-na-segodnya')
-    request = g.doc.select('//div[@class="panda-article"]/table[2]').html()
+    # Если дата в таблице1==сегодняшней, то парсим таблицу2, иначе таблицу1
+    date_table1 = re.search(r'\d+.\d+.\d+',
+                            g.doc.select('//div[@class="panda-article"]/table[1]/tbody/tr[1]/td[1]/p').text()).group()
+    if datetime.datetime.strptime(date_table1, '%d.%m.%y') == datetime.datetime.now().date():
+        xpath = '//div[@class="panda-article"]/table[2]'
+    else:
+        xpath = '//div[@class="panda-article"]/table[1]'
+    request = g.doc.select(xpath).html()
     doc = html.document_fromstring(request)
-
     cleaner = clean.Cleaner(style=True, remove_tags=['p', 'em'])
     doc = cleaner.clean_html(doc)
     table = []
@@ -48,7 +56,6 @@ def get_food_menu():
             k = i.index(j)
             i.remove(j)
             i.insert(k, ' '.join(j.split()))
-
     date = table.pop(0)[0]
     menu = []
     menu_complex = []
