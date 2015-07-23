@@ -2,7 +2,8 @@ body {
   padding-top: 50px;
   font-family: OpenSans, sans-serif;
   background: #333 url(/static/img/pattern.jpg);
-  height: 100%; }
+  height: 100%;
+  overflow-y: scroll; }
 
 h1 {
   text-transform: uppercase; }
@@ -78,7 +79,8 @@ h2 {
   text-align: right; }
 
 section {
-  border-radius: 5px; }
+  border-radius: 5px;
+  min-height: 90%; }
   section h2 {
     font-family: OpenSans, sans-serif;
     font-weight: bold; }
